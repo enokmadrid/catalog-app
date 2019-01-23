@@ -20,5 +20,5 @@ Route::get('/developer', function () {
 });
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'DesignController@index');
 Route::resource('designs', 'DesignController');

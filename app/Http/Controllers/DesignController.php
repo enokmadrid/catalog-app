@@ -138,6 +138,12 @@ class DesignController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Design $design) {
+
+        if (empty($design)) {
+            Session::flash('message', 'Design not found');
+            return Redirect::to('designs');
+        }
+
         // delete design
         $design->delete();
 

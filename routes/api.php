@@ -28,6 +28,6 @@ Route::group(['prefix' => 'auth'],
 
 Route::group([ 'middleware' => 'auth:api' ],
     function() {
-        Route::get('designs', 'API\DesignController@index');
+        Route::resource('designs', 'API\DesignController');
     }
 );

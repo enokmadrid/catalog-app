@@ -16,7 +16,7 @@ class DesignController extends ApiController
     public function index()
     {
         // get all the designs
-        $designs = Design::all();
+        $designs = Design::where('owner_id', auth()->id())->get();
 
         return $this->sendResponse($designs->toArray(), 'Products retrieved successfully.');
     }

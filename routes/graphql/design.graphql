@@ -1,0 +1,34 @@
+type Query {
+    designs: [Design!]! @all(model: "App\\Design")
+    design(id: ID @eq): Design @find(model: "App\\Design")
+}
+
+type Mutation {
+    createDesign(
+        name: String @rules(apply: ["required"])
+        number: String @rules(apply: ["required"])
+        price: String
+        image: String
+    ): Design @create(model: "App\\Design")
+    
+    updateDesign(
+        id: ID @rules(apply: ["required"])
+        name: String @rules(apply: ["required"])
+        number: String @rules(apply: ["required"])
+        price: String
+        image: String
+    ): Design @update(model: "App\\Design")
+    
+    deleteDesign(
+        id: ID @rules(apply: ["required"])
+    ): Design @delete(model: "App\\Design")
+}
+
+type Design {
+    id: ID!
+    name: String!
+    number: String
+    image: String
+    owner: User! @belongsTo
+}
+

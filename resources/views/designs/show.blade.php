@@ -22,6 +22,12 @@
                     </p>
 
                     <img src="{{ Storage::disk('s3')->url($design->image) }}" alt="image">
+
+                    <ul>
+                            @foreach($design->categories as $key => $categories)
+                            <li>{{ $categories->title }}</li>
+                            @endforeach
+                    </ul>
                 </div>
 
                 <div class="action-bar">

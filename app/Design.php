@@ -28,4 +28,14 @@ class Design extends Model
     public function owner() {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * A design belongs to many categories
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

@@ -22,4 +22,4 @@ Auth::routes();
 
 Route::get('/home', 'DesignController@index');
 Route::resource('designs', 'DesignController');
-Route::resource('categories', 'CategoryController');
+Route::resource('categories', 'CategoryController', ['except' => 'create']);

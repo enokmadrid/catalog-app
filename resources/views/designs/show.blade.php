@@ -23,11 +23,13 @@
 
                     <img src="{{ Storage::disk('s3')->url($design->image) }}" alt="image">
 
+                    @if ($design->categories->count() > 0)
                     <ul>
-                            @foreach($design->categories as $key => $categories)
-                            <li>{{ $categories->title }}</li>
+                            @foreach($design->categories as $key => $category)
+                            <li>{{ $category->title }}</li>
                             @endforeach
                     </ul>
+                    @endif
                 </div>
 
                 <div class="action-bar">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Design;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -36,8 +37,11 @@ class DesignController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
+
+        $categories = Category::all();
+
         // load the create form (app/views/designs/create.blade.php)
-        return view('designs.create');
+        return view('designs.create')->with('categories', $categories);
     }
 
     /**
@@ -68,7 +72,11 @@ class DesignController extends Controller
         ];
 
         // create and store by this user
-        Design::create($attributes);
+        $design = Design::create($attributes);
+        
+        // associate category to the newly created design
+        $categories = $request->categories;
+        $design->categories()->sync($categories, false);
 
         // redirect
         Session::flash('message', 'Successfully created design!');
@@ -125,6 +133,10 @@ class DesignController extends Controller
             $design['image'] = $this->storeImage($request);
         }
         $design->save();
+
+        // associate category to the newly created design
+        $categories = $request->categories;
+        $design->categories()->sync($categories, false);
 
         // redirect
         Session::flash('message', 'Successfully Updated design!');

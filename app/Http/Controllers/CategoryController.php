@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Session;
 class CategoryController extends Controller
 {
     /**
+     * CategoryController constructor.
+     */
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -23,17 +30,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // load the create form (app/views/categories/create.blade.php)
-        return view('categories.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,7 +39,7 @@ class CategoryController extends Controller
     {
          // validate
          $request->validate([
-            'title' => 'required'
+            'title' => 'required|max:255'
         ]);
 
         // create and store by this user

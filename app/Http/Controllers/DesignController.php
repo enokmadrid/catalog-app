@@ -7,6 +7,8 @@ use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Image;
+use Storage;
 
 class DesignController extends Controller
 {
@@ -173,13 +175,25 @@ class DesignController extends Controller
         // validate image file
         $request->validate(['image' => 'required | mimes:jpeg,png,jpg | max:2048']);
 
-        $file = $request->file('image');
-        $imageName = time() . '-' . $file->getClientOriginalName();
-        $imageFolder = 'images';
-        $imagePath = $imageFolder . '/' . $imageName;
-
+        //Regular size image
+        $image = $request->file('image');
+        $imageName = time() . '-' . $image->getClientOriginalName();
+        $imageFolder = 'images/';
+        $imagePath = $imageFolder . $imageName;
+        
         // Store image in AWS S3
-        $file->storeAs($imageFolder, $imageName, 's3');
+        $image->storeAs($imageFolder, $imageName, 's3');
+
+        //Thumbnail size image
+        $thumbnail = Image::make($image)->resize(64, null, function($constraint){
+            $constraint->aspectRatio();
+        });
+        $thumbnail = $thumbnail->stream()->detach();
+        $thumbnailFolder = 'images/thumbnail/';
+        $thumbnailPath = $thumbnailFolder . $imageName;
+
+        // Store thumbnail in AWS S3, Used the Storage method because of image intervention
+        Storage::disk('s3')->put($thumbnailPath, $thumbnail);
 
         return $imagePath;
     }

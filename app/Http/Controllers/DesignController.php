@@ -64,7 +64,6 @@ class DesignController extends Controller
         ]);
 
         // Store image and save image path
-        // $imagePath = $this->storeImage($request);
         $image = $request->file('image');
         $imagePath = DesignImage::store($image);
 

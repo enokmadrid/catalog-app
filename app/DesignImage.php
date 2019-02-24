@@ -9,9 +9,9 @@ use Storage;
 class DesignImage extends Model
 {
      /**
-     * A category has many designs
+     * An Image belongs to a Design
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function designs() {
         return $this->belongsTo(Design::class);

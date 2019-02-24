@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Design;
+use App\DesignImage;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -63,7 +64,10 @@ class DesignController extends Controller
         ]);
 
         // Store image and save image path
-        $imagePath = $this->storeImage($request);
+        // $imagePath = $this->storeImage($request);
+        $image = $request->file('image');
+        $imagePath = DesignImage::store($image);
+
 
         $attributes = [
             'name'  => $request->name,
@@ -132,7 +136,12 @@ class DesignController extends Controller
 
         // Check for image, Store image and save image path
         if ($request->hasFile('image')) {
-            $design['image'] = $this->storeImage($request);
+            // validate image file
+            $request->validate(['image' => 'required | mimes:jpeg,png,jpg | max:2048']);
+
+            //create and store image file
+            $image = $request->file('image');
+            $design['image'] = DesignImage::store($image);
         }
         $design->save();
 
@@ -163,38 +172,5 @@ class DesignController extends Controller
 
         Session::flash('message', 'Design deleted successfully!');
         return Redirect::to('designs');
-    }
-
-    /**
-     * Store the image file
-     *
-     * @param Request $request
-     * @return string
-     */
-    private function storeImage(Request $request): string {
-        // validate image file
-        $request->validate(['image' => 'required | mimes:jpeg,png,jpg | max:2048']);
-
-        //Regular size image
-        $image = $request->file('image');
-        $imageName = time() . '-' . $image->getClientOriginalName();
-        $imageFolder = 'images/';
-        $imagePath = $imageFolder . $imageName;
-        
-        // Store image in AWS S3
-        $image->storeAs($imageFolder, $imageName, 's3');
-
-        //Thumbnail size image
-        $thumbnail = Image::make($image)->resize(64, null, function($constraint){
-            $constraint->aspectRatio();
-        });
-        $thumbnail = $thumbnail->stream()->detach();
-        $thumbnailFolder = 'images/thumbnail/';
-        $thumbnailPath = $thumbnailFolder . $imageName;
-
-        // Store thumbnail in AWS S3, Used the Storage method because of image intervention
-        Storage::disk('s3')->put($thumbnailPath, $thumbnail);
-
-        return $imagePath;
     }
 }

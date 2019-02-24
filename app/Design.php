@@ -38,4 +38,14 @@ class Design extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    /**
+     * A design has one image
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function image()
+    {
+        return $this->hasOne(DesignImage::class);
+    }
 }

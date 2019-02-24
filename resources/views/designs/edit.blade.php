@@ -27,14 +27,14 @@
                         <input name="price" type="text" id="price" class="form-control" value="{{ $design->price }}">
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="categories">Select Categories</label>
                         <select class="form-control" name="categories[]" multiple="multiple">
                             @foreach($categories as $key => $category)    
                                 <option value="{{ $category->id }}">{{ $category->title }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label for="image">Image</label>

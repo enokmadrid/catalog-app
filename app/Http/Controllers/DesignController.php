@@ -112,7 +112,9 @@ class DesignController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Design $design) {
-        return view('designs.edit', compact('design'));
+        $categories = Category::all();
+
+        return view('designs.edit', compact('design'))->with('categories', $categories);
     }
 
     /**

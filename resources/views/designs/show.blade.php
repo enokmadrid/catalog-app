@@ -18,10 +18,10 @@
                     <h2>{{ $design->name }}</h2>
                     <p>
                         <strong>Number:</strong> {{ $design->number }}<br>
-                        <strong>Price:</strong> {{ $design->price }}
+                        <strong>Price:</strong>${{  number_format($design->price, 2, '.', '.') }}
                     </p>
 
-                    <img src="{{ Storage::disk('s3')->url($design->image) }}" alt="image">
+                    <img src="{{ Storage::disk('s3')->url('images/'.$design->image) }}" alt="image">
 
                     @if ($design->categories->count() > 0)
                     <ul>

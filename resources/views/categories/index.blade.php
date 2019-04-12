@@ -24,9 +24,16 @@
                         <tbody>
                             @foreach($categories as $key => $category)
                             <tr>
-                                <th>{{ $category->id }}</th>
+                                <td>{{ $category->id }}</td>
                                 <td>
                                     <a href="{{ URL::to('categories/' . $category->id) }}"> {{ $category->title }} </a>
+
+                                     <!-- Delete this Category -->
+                                     <form method="POST" action="/categories/{{ $category->id }}" accept-charset="UTF-8" enctype="multipart/form-data" style="display:inline;">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                        <button type="submit" class="float-lg-right btn btn-danger"><i class="fas fa-times"></i></button>
+                                     </form>
                                 </td>
                                 
                             </tr>

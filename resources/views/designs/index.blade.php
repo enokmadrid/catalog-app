@@ -15,27 +15,67 @@
                     <div class="alert alert-info">{{ Session::get('message') }}</div>
                 @endif
 
+
                 <div class="row">
+                        <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th> </th>
+                                        <th>Thumbnail</th>
+                                        <th>Design Name</th>
+                                        <th>Folder #</th>
+                                        <th>Price</th>
+                                        <th>Category</th>
+                                        <th>Published</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($designs as $key => $design)
+                                    
+                                        <tr>
+                                            <td><input type="checkbox"></td>
+                                            <td><img src="{{ Storage::disk('s3')->url('images/thumbnail/'.$design->image) }}" alt="" height="64" width="64"></td>
+                                            <td><a href="{{ URL::to('designs/' . $design->id) }}">{{ $design->name }}</a></td>
+                                            <td>{{ $design->number }}</td>
+                                            <td>${{ number_format($design->price, 2, '.', '.') }}</td>
+                                            <td>
+                                                    @if ($design->categories->count() > 0)
+                                                    <ul>
+                                                        @foreach($design->categories as $key => $category)
+                                                        <li>{{ $category->title }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                    @endif
+                                            </td>
+                                            <td>On</td>
+                                        </tr>
+                                    
+                                    @endforeach
+                                </tbody>
+                        </table>
+                </div>
+
+                {{-- <div class="row">
                     @foreach($designs as $key => $design)
                     <div class="col-md-3">
-                        {{--<div >--}}
+                       
                             <a class="card card-link" href="{{ URL::to('designs/' . $design->id) }}">
 
-                                <img class="card-img-top" src="{{ Storage::disk('s3')->url($design->image) }}" alt="">
+                                <img class="card-img-top" src="{{ Storage::disk('s3')->url('images/'.$design->image) }}" alt="">
 
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $design->name }}</h5>
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
-                                        Folder: {{ $design->number }} <span class="float-lg-right">${{ number_format($design->price, 2, ',', '.') }}</span>
+                                        Folder: {{ $design->number }} <span class="float-lg-right">${{ number_format($design->price, 2, '.', '.') }}</span>
                                     </li>
                                 </ul>
                             </a>
-                        {{--</div>--}}
+                     
                     </div>
                     @endforeach
-                </div>
+                </div> --}}
 
             </div>
         </div>

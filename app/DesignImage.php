@@ -45,6 +45,6 @@ class DesignImage extends Model
         // Store thumbnail in AWS S3, Used the Storage method because of image intervention
         Storage::disk('s3')->put($thumbnailPath, $thumbnail);
 
-        return $imagePath;
+        return $imageName;
     }
 }

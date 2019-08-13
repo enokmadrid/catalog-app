@@ -31,7 +31,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($designs as $key => $design)
-                                    
+
                                         <tr>
                                             <td><input type="checkbox"></td>
                                             <td><img src="{{ Storage::disk('s3')->url('images/thumbnail/'.$design->image) }}" alt="" height="64" width="64"></td>
@@ -47,9 +47,16 @@
                                                     </ul>
                                                     @endif
                                             </td>
-                                            <td>On</td>
+                                            <td>
+                                              @if ($design->is_published)
+                                              Yes
+                                              @else
+                                                No
+                                              @endif
+
+                                            </td>
                                         </tr>
-                                    
+
                                     @endforeach
                                 </tbody>
                         </table>
@@ -58,7 +65,7 @@
                 {{-- <div class="row">
                     @foreach($designs as $key => $design)
                     <div class="col-md-3">
-                       
+
                             <a class="card card-link" href="{{ URL::to('designs/' . $design->id) }}">
 
                                 <img class="card-img-top" src="{{ Storage::disk('s3')->url('images/'.$design->image) }}" alt="">
@@ -72,7 +79,7 @@
                                     </li>
                                 </ul>
                             </a>
-                     
+
                     </div>
                     @endforeach
                 </div> --}}

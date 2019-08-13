@@ -16,7 +16,8 @@ class Design extends Model
         'number',
         'price',
         'image',
-        'owner_id'
+        'owner_id',
+        'is_published'
     ];
 
 

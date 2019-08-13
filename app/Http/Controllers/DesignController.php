@@ -68,12 +68,17 @@ class DesignController extends Controller
         $imagePath = DesignImage::store($image);
 
 
+        //check if the published checkbox is checked or not
+        $published = $request->is_published ? TRUE : FALSE;
+
+
         $attributes = [
             'name'  => $request->name,
             'number'=> $request->number,
             'price' => $request->price,
             'image' => $imagePath,
             'owner_id' => auth()->id(),
+            'is_published' => $published,
         ];
 
         // create and store by this user
@@ -144,11 +149,16 @@ class DesignController extends Controller
             $image = $request->file('image');
             $design['image'] = DesignImage::store($image);
         }
+
+        //check if the published checkbox is checked or not
+        $published = $request->is_published ? TRUE : FALSE;
+        $design['is_published'] = $published;
+
         $design->save();
 
         // associate category to the newly created design
         $categories = $request->categories;
-        $design->categories()->sync($categories, false);
+        $design->categories()->sync($categories, FALSE);
 
         // redirect
         Session::flash('message', 'Successfully Updated design!');

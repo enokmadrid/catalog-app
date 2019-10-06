@@ -7,9 +7,13 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 type Query {
-    me: User @middleware(checks:["auth:api"]) @auth
-    users: [User!]! @paginate(type: "paginator" model: "App\\User") @all
+    me: User @field(resolver: "UserQuery@me")
+
+    users: [User!]! @middleware(checks: ["auth:api"]) @paginate(type: "paginator" model: "App\\User")
     user(id: ID @eq): User @find(model: "App\\User")
+
+    designs: [Design!]! @all(model: "App\\Design")
+    design(id: ID @eq): Design @find
 }
 
 type Mutation {
@@ -25,6 +29,28 @@ type Mutation {
     deleteUser(
         id: ID @rules(apply: ["required"])
     ): User @delete(model: "App\\User")
+
+    login(
+       input: LoginInput
+    ): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\src\\GraphQL\\Mutations\\Login@resolve")
+   
+    refreshToken(
+       input: RefreshTokenInput
+    ): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\src\\GraphQL\\Mutations\\RefreshToken@resolve")
+    
+    logout: LogoutResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\src\\GraphQL\\Mutations\\Logout@resolve")
+   
+    forgotPassword(
+       input: ForgotPasswordInput!
+    ): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\src\\GraphQL\\Mutations\\ForgotPassword@resolve")
+   
+    updateForgottenPassword(
+       input: NewPasswordWithCodeInput
+    ): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\src\\GraphQL\\Mutations\\ResetPassword@resolve")
+   
+    register(
+       input: RegisterInput @spread
+    ): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\src\\GraphQL\\Mutations\\Register@resolve")
 }
 
 type User {
@@ -36,5 +62,55 @@ type User {
     designs: [Design] @hasMany
 }
 
-#import design.graphql
-#import auth.graphql
+type Design {
+    id: ID!
+    name: String!
+    number: String
+    image: String
+    owner: User! @belongsTo
+}
+
+type AuthPayload {
+   access_token: String!
+   refresh_token: String!
+   expires_in: Int!
+   token_type: String!
+   user: User!
+}
+
+type LogoutResponse {
+   status: String!
+   message: String
+}
+
+type ForgotPasswordResponse {
+   status: String!
+   message: String
+}
+
+input ForgotPasswordInput {
+   email: String!
+}
+
+input NewPasswordWithCodeInput {
+   email: String!
+   token: String!
+   password: String!
+   password_confirmation: String!
+}
+
+input LoginInput {
+   username: String!
+   password: String!
+}
+
+input RefreshTokenInput {
+   refresh_token: String
+}
+
+input RegisterInput {
+   name: String! @rules(apply: ["required", "string"])
+   email: String! @rules(apply: ["required", "email"])
+   password: String! @rules(apply: ["required", "confirmed", "min:8"])
+   password_confirmation: String!
+}

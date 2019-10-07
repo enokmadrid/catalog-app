@@ -1,7 +1,8 @@
-type Query {
-    designs: [Design!]! @all(model: "App\\Design")
+extend type Query {
+    designs: [Design!]! @middleware(checks: ["auth:api"]) @all(model: "App\\Design")
     design(id: ID @eq): Design @find(model: "App\\Design")
 }
+
 
 type Mutation {
     createDesign(
@@ -22,13 +23,14 @@ type Mutation {
     deleteDesign(
         id: ID @rules(apply: ["required"])
     ): Design @delete(model: "App\\Design")
+
 }
 
 type Design {
     id: ID!
     name: String!
     number: String
+    price: String
     image: String
     owner: User! @belongsTo
 }
-

@@ -30,5 +30,5 @@ return [
     | the default location
     |
     */
-    'schema' => base_path('routes/graphql/auth.graphql')
+    'schema' => base_path('graphql/auth.graphql')
 ];

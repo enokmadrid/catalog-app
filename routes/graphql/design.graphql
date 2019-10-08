@@ -10,6 +10,7 @@ type Mutation {
         number: String @rules(apply: ["required"])
         price: String
         image: String
+        owner_id: String #TODO: Attach the user who created the Design
     ): Design @create(model: "App\\Design")
     
     updateDesign(

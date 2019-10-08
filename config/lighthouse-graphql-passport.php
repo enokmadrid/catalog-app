@@ -30,5 +30,15 @@ return [
     | the default location
     |
     */
-    'schema' => base_path('graphql/auth.graphql')
+    'schema' => base_path('graphql/auth.graphql'),
+    /*
+    |--------------------------------------------------------------------------
+    | Username Column
+    |--------------------------------------------------------------------------
+    |
+    | What column should be use for the username in the users table to find
+    | the user.
+    |
+    */
+    'username' => 'email'
 ];

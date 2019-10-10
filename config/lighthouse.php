@@ -94,7 +94,7 @@ return [
     |
     */
     'namespaces' => [
-        'models' => 'App\\Models',
+        'models' => 'App',
         'queries' => 'App\\Http\\GraphQL\\Queries',
         'mutations' => 'App\\Http\\GraphQL\\Mutations',
         'interfaces' => 'App\\Http\\GraphQL\\Interfaces',

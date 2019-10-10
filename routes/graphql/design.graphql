@@ -1,6 +1,6 @@
 extend type Query {
-    designs: [Design!]! @middleware(checks: ["auth:api"]) @all(model: "App\\Design")
-    design(id: ID @eq): Design @find(model: "App\\Design")
+    designs: [Design!]! @middleware(checks: ["auth:api"]) @all
+    design(id: ID @eq): Design @find
 }
 
 
@@ -11,7 +11,7 @@ type Mutation {
         price: String
         image: String
         owner_id: String #TODO: Attach the user who created the Design
-    ): Design @create(model: "App\\Design")
+    ): Design @create
     
     updateDesign(
         id: ID @rules(apply: ["required"])
@@ -19,11 +19,11 @@ type Mutation {
         number: String @rules(apply: ["required"])
         price: String
         image: String
-    ): Design @update(model: "App\\Design")
+    ): Design @update
     
     deleteDesign(
         id: ID @rules(apply: ["required"])
-    ): Design @delete(model: "App\\Design")
+    ): Design @delete
 
 }
 
@@ -33,5 +33,6 @@ type Design {
     number: String
     price: String
     image: String
-    owner: User! @belongsTo
+    categories: [Category] @belongsToMany
+    owner: User @belongsTo
 }

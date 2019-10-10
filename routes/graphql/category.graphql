@@ -1,0 +1,27 @@
+extend type Query {
+    categories: [Category!]! @all
+    category(id: ID @eq): Category @find
+}
+
+
+type Mutation {
+    createCategory(
+        title: String @rules(apply: ["required", "unique:categories, title"])
+    ): Category @create
+    
+    updateCategory(
+        id: ID @rules(apply: ["required"])
+        title: String @rules(apply: ["required", "unique:categories, title"])
+    ): Category @update
+    
+    deleteCategory(
+        id: ID @rules(apply: ["required"])
+    ): Category @delete
+
+}
+
+type Category {
+    id: ID!
+    title: String!
+    designs: [Design] @belongsToMany
+}

@@ -13,3 +13,4 @@ type Query {
 }
 #import user.graphql
 #import design.graphql
+#import category.graphql
